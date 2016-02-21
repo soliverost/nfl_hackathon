@@ -60,7 +60,7 @@
 
 	var filter_style = "''";
 	var dynamic = true;
-	var charts = [{ "type": "PlotlyAPI", "options": { "chartid": "plotlyid", "url": "/plotlyurl/", "params": { "game": "game1", "new_index": "0" } } }];
+	var charts = [{ "type": "PlotlyAPI", "options": { "chartid": "plotlyid", "url": "/plotlyurl/", "params": { "game": "game1", "new_index": "1" } } }];
 	var filters = [{ "type": "SliderInput", "options": { "min": 1, "default": "1", "max": 170, "label": "new_index", "alias": "new_index", "step": 1 } }, { "type": "SelectButton", "options": { "default": "game1", "items": ["game1", "game2", "game3"], "alias": "game", "label": "Game" } }];
 
 	ReactDOM.render(React.createElement(_SimpleChart.FilterChart, {
@@ -163,18 +163,14 @@
 	                _react2.default.createElement(
 	                    _reactBootstrap.Row,
 	                    null,
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { xs: 3, md: 3 },
-	                        _react2.default.createElement(_replace.ReplaceImages, {
-	                            ref: "chart_".concat(ncharts),
-	                            url: "/images/" })
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { xs: 9, md: 9 },
-	                        charts
-	                    )
+	                    _react2.default.createElement(_replace.ReplaceImages, {
+	                        ref: "chart_".concat(ncharts),
+	                        url: "/images/" })
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.Row,
+	                    null,
+	                    charts
 	                )
 	            );
 	        }
@@ -182,6 +178,10 @@
 
 	    return FilterChart;
 	}(_react2.default.Component);
+	// <Col xs={3} md={3}>
+	// </Col>
+	// <Col xs={9} md={9}>
+	// </Col>
 
 /***/ },
 /* 3 */
@@ -110738,40 +110738,52 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            var items = this.state.data.map(function (item, index) {
+	            var header = this.state.data.map(function (item, index) {
 	                return _react2.default.createElement(
-	                    "li",
-	                    { className: "list-group-item", key: index },
+	                    "td",
+	                    null,
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: "util-item" },
+	                        { className: "SimInfo" },
 	                        _react2.default.createElement(
-	                            "a",
+	                            "h4",
 	                            null,
-	                            _react2.default.createElement("img", { src: item.imgsrc, height: "64", width: "128" }),
 	                            _react2.default.createElement(
-	                                "ul",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    item.dist
-	                                ),
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    item.position
-	                                ),
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    item.jersey
-	                                ),
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    item.name
-	                                )
+	                                "span",
+	                                { className: "pull-left label label-default" },
+	                                item.position,
+	                                " ",
+	                                item.jersey
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "h4",
+	                            null,
+	                            _react2.default.createElement(
+	                                "span",
+	                                { className: "pull-right label label-default" },
+	                                item.name
+	                            )
+	                        )
+	                    )
+	                );
+	            }.bind(this));
+	            var images = this.state.data.map(function (item, index) {
+	                return _react2.default.createElement(
+	                    "td",
+	                    { className: "style-image-table" },
+	                    _react2.default.createElement("img", { className: "style-image", src: item.imgsrc, height: "145" }),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "Siminfo" },
+	                        _react2.default.createElement(
+	                            "h4",
+	                            null,
+	                            _react2.default.createElement(
+	                                "span",
+	                                { className: "pull-left label label-default" },
+	                                "Score: ",
+	                                item.dist
 	                            )
 	                        )
 	                    )
@@ -110782,9 +110794,22 @@
 	                "div",
 	                { className: "bs-scroll" },
 	                _react2.default.createElement(
-	                    "ul",
-	                    { className: "list-group" },
-	                    items
+	                    "table",
+	                    { className: "dash-grid", style: { width: "100%" } },
+	                    _react2.default.createElement(
+	                        "tbody",
+	                        null,
+	                        _react2.default.createElement(
+	                            "tr",
+	                            null,
+	                            header
+	                        ),
+	                        _react2.default.createElement(
+	                            "tr",
+	                            null,
+	                            images
+	                        )
+	                    )
 	                )
 	            );
 	        }
@@ -110792,6 +110817,14 @@
 
 	    return ReplaceImages;
 	}(_react2.default.Component);
+
+	// <ul>
+	//
+	//     <li>{item.dist}</li>
+	//     <li>{item.position}</li>
+	//     <li>{item.jersey}</li>
+	//     <li>{item.name}</li>
+	// </ul>
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(409)))
 
 /***/ },

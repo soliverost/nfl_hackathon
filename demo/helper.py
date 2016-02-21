@@ -3,6 +3,26 @@ from pyxley.charts import Chart
 from flask import jsonify, request
 import numpy as np
 class Images(Chart):
+    imgs = {
+        "east": [
+        "img1.png",
+        "img2.jpg",
+        "img3.jpg",
+        "img4.jpg",
+        "img5.jpeg",
+        "img6.png",
+        "img7.jpg",
+        ],
+        "west": [
+        "img1.png",
+        "img2.jpg",
+        "img3.png",
+        "img4.jpg",
+        "img5.png",
+        "img6.jpg",
+        "img7.png",
+        ]
+    }
     def __init__(self, init_params, indata, outdata):
 
         options = {
@@ -19,16 +39,23 @@ class Images(Chart):
                     args[c] = init_params[c]
             _in = self.apply_filters(indata, args)
             _out = self.apply_filters(outdata, args)
-            print _in.shape
-            print _out.shape
+
             return jsonify(Images.to_json(
-                    _in, _out
+                    _in, _out, self.imgs
                 ))
         super(Images, self).__init__("Random", options, get_data)
 
     @staticmethod
-    def to_json(indata, outdata):
+    def to_json(indata, outdata, imgs):
         _in = indata.sort_values(by="dist", ascending=False)
+
+        useimgs = imgs["east"]
+        _dir = "./static/east/"
+        if "away" in _in.team.values:
+            useimgs = imgs["west"]
+            _dir = "./static/west/"
+
+        np.random.shuffle(useimgs)
 
         out = []
         _pcount = 0
@@ -40,12 +67,13 @@ class Images(Chart):
             _out = outdata[idx].sort_values(by="dist")
             if _out["displayName"].iloc[0] in _seen:
                 continue
+
             out.append(
             {
                 "name": _out["displayName"].iloc[0],
                 "jersey": _out["jerseyNumber"].iloc[0],
                 "dist": "%.2f"%_out["dist"].iloc[0],
-                "imgsrc": "../static/eastwest.png",
+                "imgsrc": _dir+useimgs[_pcount],
                 "position": _out["position"].iloc[0]
             })
             _seen[ _out["displayName"].iloc[0]] = True
@@ -63,7 +91,6 @@ class PlotlyAPI(Chart):
         super(PlotlyAPI, self).__init__("PlotlyAPI", options, route_func)
 
 class PlotlyLines(PlotlyAPI):
-    _OFFENSE = ["TE", "WR", "RB", "G", "P", "OG", "QB", "FB", "C", "K"]
     def __init__(self, xypairs, data_source,
         names=[],
         labels=[],
@@ -103,6 +130,8 @@ class PlotlyLines(PlotlyAPI):
     @staticmethod
     def to_json(df, xypairs, mode,
         ptype, labels, layout, names):
+        _OFFENSE = {"TE", "WR", "RB", "G", "P", "OG", "QB", "FB", "C", "K"}
+
         if df.empty:
             return {
                 "x": [],
@@ -116,10 +145,15 @@ class PlotlyLines(PlotlyAPI):
         for pair, label, name in zip(xypairs, labels, names):
             x, y = pair
             _size = 24
+            _color = 'rgb(93, 164, 214)'
 
+            _marker = "x"
             if (x in df.columns) and (y in df.columns):
-                if "QB" in df[label].values:
+                players = set(df[label].values.tolist())
+                if players.intersection(_OFFENSE):
                     _usedist = "dist"
+                    _color = 'rgb(255, 65, 54)'
+                    _marker = "circle-open"
                     if name == "away":
                         _usedist = "dist_away"
                     _size = df[_usedist].values.tolist()
@@ -133,7 +167,12 @@ class PlotlyLines(PlotlyAPI):
                         "mode": mode,
                         "type": ptype,
                         "marker": {
-                            "size": _size
+                            "size": _size,
+                            "color": _color,
+                            "symbol": _marker,
+                            "line": {
+                                "width": 4
+                            }
                         }
                     }
                 )
