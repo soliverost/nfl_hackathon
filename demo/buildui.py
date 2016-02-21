@@ -49,6 +49,8 @@ def split_teams(datafile, players, dist):
         (df["dist_away"].max() - df["dist_away"].min()))
     df["dist"] = df["dist"].fillna(24)
     df["dist_away"] = df["dist_away"].fillna(24)
+    df["dist"].loc[df["dist"] < 24] = 24
+    df["dist_away"].loc[df["dist_away"] < 24] = 24
     return df, _ids
 
 def fatigue(datafile):
@@ -107,7 +109,12 @@ def make_ui(datafiles):
         labels=["position", "position_away"],
         names=["Home", "Away"],
         init_params=init_params,
-        layout={"hovermode": "closest"})
+        layout={
+            "hovermode": "closest",
+            "plot_bgcolor": 'rgba(44,94,79,0.7)',
+            "xaxis": {"range": [0, 53]},
+            "paper_bgcolor": 'rgba(44, 94, 79, 0.0)',
+        })
     ui.add_chart(dm)
 
     imgs = Images(init_params, _onfield, _offfield)

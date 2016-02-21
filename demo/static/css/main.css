@@ -12,6 +12,8 @@
 body {
   font-style:normal;
   font-family:"BrandonText-Regular", sans-serif;
+  background-color: rgba(44, 94, 79, 0.3);
+
 }
 
 #titlebar {
@@ -26,4 +28,41 @@ body {
 
 ul#nflscroll li {
     display:inline;
+}
+
+.label {
+  margin: 1px!important;
+}
+
+.pull-left {
+  float: left!important;
+}
+
+.pull-right {
+  float: right!important;
+}
+
+.Siminfo {
+  display: block;
+  width: 220px!important;
+  margin: 10px!important;
+}
+.style-image {
+  padding-bottom: 10px;
+}
+.style-image-table {
+  text-align: center;
+}
+.style-image img {
+  width: 100%;
+}
+table.dash-grid {
+  width: 100%;
+  overflow: auto;
+}
+table.dash-grid tbody {
+  vertical-align: top;
+}
+span.label {
+  margin-right: 5px;
 }
