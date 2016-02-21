@@ -1,0 +1,29 @@
+
+.pyx-slider {
+  width: 200px !important;
+}
+
+.pyDataMap {
+    position: middle;
+    height: 500px;
+    width: 800px;
+  }
+
+body {
+  font-style:normal;
+  font-family:"BrandonText-Regular", sans-serif;
+}
+
+#titlebar {
+   color: whitesmoke;
+   background-color: rgb(1,51,105);
+   text-align: center;
+   vertical-align: middle;
+   padding-top: 20px;
+   padding-bottom: 20px;
+   font-size: larger;
+}
+
+ul#nflscroll li {
+    display:inline;
+}
